@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aanmelden — Vakschool Weerterland</title>
+<style>
+* { box-sizing:border-box; margin:0; padding:0; }
+:root { --marine:#1B2A4A; --terra:#C04E20; --terra-licht:#F7EDE6; --lichtblauw:#EDF0F5; --gebroken-wit:#FAFAF8; --lichtgrijs:#F8F6F3; --sub:#555; --rand:#DDE1E8; --groen:#27AE60; --groen-licht:#EAF7EF; }
+body { font-family:'Segoe UI',Arial,sans-serif; font-size:15px; color:#1A1A1A; background:var(--gebroken-wit); }
+
+nav { background:var(--marine); padding:0 28px; display:flex; align-items:center; justify-content:space-between; height:58px; position:sticky; top:0; z-index:100; }
+.logo { display:flex; align-items:center; gap:12px; }
+.logo-naam { font-size:14px; font-weight:700; color:#fff; line-height:1.2; }
+.logo-sub { font-size:10px; color:rgba(255,255,255,0.45); letter-spacing:0.06em; text-transform:uppercase; }
+.nav-links { display:flex; gap:20px; }
+.nav-links a { font-size:13px; color:#fff; text-decoration:none; font-weight:500; border-bottom:2px solid transparent; padding-bottom:2px; margin-right:20px; }
+.nav-links a:last-child { margin-right:0; }
+.nav-links a.actief, .nav-links a:hover { border-bottom-color:var(--terra); }
+.nav-btn { background:var(--terra); color:#fff; border:none; padding:8px 16px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; }
+.terra-streep { height:5px; background:var(--terra); }
+
+.hero { background:var(--marine); padding:48px 28px 40px; position:relative; overflow:hidden; }
+.hero::after { content:''; position:absolute; right:-40px; bottom:-40px; width:240px; height:240px; border-radius:50%; background:rgba(255,255,255,0.04); }
+.hero-tag { display:inline-block; background:var(--terra); color:#fff; font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; padding:4px 12px; border-radius:4px; margin-bottom:16px; }
+.hero h1 { font-size:26px; font-weight:700; color:#fff; line-height:1.25; max-width:560px; margin-bottom:14px; }
+.hero p { font-size:14px; color:rgba(255,255,255,0.82); max-width:560px; line-height:1.75; }
+
+section { padding:44px 28px; }
+section.grijs { background:var(--lichtgrijs); }
+h2 { font-size:21px; font-weight:700; color:var(--marine); margin-bottom:6px; }
+.intro { font-size:14px; color:var(--sub); max-width:640px; margin-bottom:26px; line-height:1.7; }
+
+/* KEUZE KAARTEN */
+.keuze-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:18px; max-width:760px; }
+.keuze-kaart { background:#fff; border:2px solid var(--rand); border-radius:14px; padding:28px 26px; cursor:pointer; transition:border-color .15s, transform .1s; text-align:left; }
+.keuze-kaart:hover { border-color:var(--terra); transform:translateY(-2px); }
+.keuze-kaart.actief { border-color:var(--terra); background:var(--terra-licht); }
+.keuze-icoon { width:46px; height:46px; border-radius:10px; background:var(--lichtblauw); display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px; }
+.keuze-kaart h3 { font-size:17px; font-weight:700; color:var(--marine); margin-bottom:6px; }
+.keuze-kaart p { font-size:13px; color:var(--sub); line-height:1.6; }
+
+/* FORMULIER */
+.form-wrap { display:none; max-width:680px; }
+.form-wrap.actief { display:block; }
+.form-blok { background:#fff; border:1px solid var(--rand); border-radius:12px; padding:26px 28px; margin-bottom:18px; }
+.form-blok-label { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--terra); margin-bottom:14px; }
+.veld { margin-bottom:16px; }
+.veld label { display:block; font-size:13px; font-weight:600; color:var(--marine); margin-bottom:6px; }
+.veld .hint { font-size:12px; color:var(--sub); font-weight:400; margin-top:3px; }
+.veld input[type=text], .veld input[type=email], .veld input[type=tel], .veld input[type=date], .veld input[type=number], .veld select, .veld textarea {
+  width:100%; padding:10px 12px; border:1.5px solid var(--rand); border-radius:7px; font-size:14px; font-family:inherit; color:#1A1A1A; background:#fff;
+}
+.veld textarea { resize:vertical; min-height:80px; }
+.veld input:focus, .veld select:focus, .veld textarea:focus { outline:none; border-color:var(--terra); }
+.veld-rij { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.radio-rij, .check-rij { display:flex; flex-wrap:wrap; gap:10px; margin-top:6px; }
+.radio-opt, .check-opt { display:flex; align-items:center; gap:7px; background:var(--lichtblauw); border:1.5px solid transparent; border-radius:7px; padding:9px 14px; font-size:13px; color:var(--marine); cursor:pointer; }
+.radio-opt input, .check-opt input { accent-color:var(--terra); }
+.verplicht { color:var(--terra); }
+
+.begeleiding-intro { background:var(--lichtblauw); border-left:4px solid var(--marine); border-radius:0 8px 8px 0; padding:14px 16px; font-size:13px; color:var(--sub); line-height:1.7; margin-bottom:16px; }
+.begeleiding-intro strong { color:var(--marine); }
+
+#voogd-blok { display:none; border-top:1.5px dashed var(--rand); margin-top:18px; padding-top:18px; }
+#voogd-blok.tonen { display:block; }
+.voogd-label { font-size:12px; font-weight:700; color:var(--terra); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:10px; }
+
+.uitsluiting { font-size:12px; color:var(--sub); display:flex; align-items:center; gap:6px; margin-top:10px; }
+.uitsluiting::before { content:'✕'; color:#B4B4B4; font-weight:700; }
+
+.verzend-btn { background:var(--terra); color:#fff; border:none; padding:13px 30px; border-radius:8px; font-size:15px; font-weight:700; cursor:pointer; }
+.verzend-btn:hover { background:#A8431B; }
+.terug-link { display:inline-block; font-size:13px; color:var(--sub); margin-bottom:18px; cursor:pointer; text-decoration:none; }
+.terug-link:hover { color:var(--marine); }
+
+/* BEVESTIGING */
+.bevestiging { display:none; max-width:520px; background:var(--groen-licht); border:1.5px solid var(--groen); border-radius:12px; padding:32px 28px; text-align:center; }
+.bevestiging.actief { display:block; }
+.bevestiging-icoon { font-size:38px; margin-bottom:12px; }
+.bevestiging h3 { color:var(--groen); font-size:19px; margin-bottom:8px; }
+.bevestiging p { font-size:14px; color:var(--sub); line-height:1.7; }
+
+footer { background:#111D33; color:rgba(255,255,255,0.5); padding:18px 28px; font-size:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
+footer a { color:rgba(255,255,255,0.45); text-decoration:none; margin-left:14px; }
+
+@media (max-width:700px) {
+  .veld-rij { grid-template-columns:1fr; }
+}
+</style>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:_dlc_DocId msdt:dt="string">N36ZD6P3VSNZ-1124819296-14108</mso:_dlc_DocId>
+<mso:_dlc_DocIdItemGuid msdt:dt="string">c3f3e37d-eb33-4e93-9247-4822132753cb</mso:_dlc_DocIdItemGuid>
+<mso:_dlc_DocIdUrl msdt:dt="string">https://askgroupeu.sharepoint.com/sites/HRM/_layouts/15/DocIdRedir.aspx?ID=N36ZD6P3VSNZ-1124819296-14108, N36ZD6P3VSNZ-1124819296-14108</mso:_dlc_DocIdUrl>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <svg height="36" viewBox="0 0 130 44" xmlns="http://www.w3.org/2000/svg" style="display:block;">
+      <rect x="0" y="0" width="6" height="44" fill="#C04E20"/>
+      <polygon points="10,2 18,37 24,37 30,11 26,2" fill="#C04E20"/>
+      <polygon points="26,2 30,11 36,37 42,37 50,2 44,2 37,27 30,11" fill="#FFFFFF"/>
+    </svg>
+    <div>
+      <div class="logo-naam">Vakschool Weerterland</div>
+      <div class="logo-sub">Coöperatie · Leerwerkbedrijf</div>
+    </div>
+  </div>
+</nav>
+<div class="terra-streep"></div>
+
+<div class="hero">
+  <div class="hero-tag">Aanmelden</div>
+  <h1>Meld je aan als bedrijf of als leerling</h1>
+  <p>Kies hieronder wie je bent. We vragen alleen wat we echt nodig hebben om snel met je in contact te komen — de rest bespreken we samen in een persoonlijk gesprek.</p>
+</div>
+
+<!-- STAP 1: KEUZE -->
+<section id="stap-keuze">
+  <h2>Wie meldt zich aan?</h2>
+  <p class="intro">Maak een keuze. Je kunt altijd terug om dit te wijzigen.</p>
+  <div class="keuze-grid">
+    <div class="keuze-kaart" id="keuze-bedrijf" onclick="kiesRoute('bedrijf')">
+      <div class="keuze-icoon">🏭</div>
+      <h3>Ik ben een bedrijf</h3>
+      <p>Je wilt leerwerkplekken aanbieden en lid worden van de coöperatie.</p>
+    </div>
+    <div class="keuze-kaart" id="keuze-leerling" onclick="kiesRoute('leerling')">
+      <div class="keuze-icoon">🎓</div>
+      <h3>Ik ben leerling / kandidaat</h3>
+      <p>Je zoekt een leerwerkplek in de techniek en wilt je aanmelden.</p>
+    </div>
+  </div>
+</section>
+
+<!-- STAP 2A: FORMULIER BEDRIJF -->
+<section class="grijs">
+  <div class="form-wrap" id="form-bedrijf">
+    <a class="terug-link" onclick="terugNaarKeuze()">← Terug naar keuze</a>
+    <h2>Aanmelden als bedrijf</h2>
+    <p class="intro">Je ontvangt direct een bevestiging per e-mail. We nemen daarna binnen enkele werkdagen telefonisch of per mail contact met je op voor een kennismakingsgesprek.</p>
+
+    <form id="formulier-bedrijf" onsubmit="return verzendFormulier(event,'bedrijf')">
+      <div class="form-blok">
+        <div class="form-blok-label">Bedrijfsgegevens</div>
+
+        <div class="veld">
+          <label>Bedrijfsnaam <span class="verplicht">*</span></label>
+          <input type="text" name="bedrijfsnaam" required>
+        </div>
+
+        <div class="veld-rij">
+          <div class="veld">
+            <label>KvK-nummer <span class="verplicht">*</span></label>
+            <input type="text" name="kvk_nummer" required pattern="[0-9]{8}" maxlength="8" placeholder="8 cijfers">
+          </div>
+          <div class="veld">
+            <label>Branche / sector <span class="verplicht">*</span></label>
+            <select name="branche" required>
+              <option value="">Maak een keuze</option>
+              <option value="metaal">Metaal</option>
+              <option value="installatie">Installatietechniek</option>
+              <option value="hout">Hout / timmer</option>
+              <option value="anders">Anders</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="veld-rij">
+          <div class="veld">
+            <label>Contactpersoon <span class="verplicht">*</span></label>
+            <input type="text" name="contactpersoon_naam" required>
+          </div>
+          <div class="veld">
+            <label>Functie <span class="verplicht">*</span></label>
+            <input type="text" name="contactpersoon_functie" required>
+          </div>
+        </div>
+
+        <div class="veld-rij">
+          <div class="veld">
+            <label>Telefoonnummer <span class="verplicht">*</span></label>
+            <input type="tel" name="telefoon" required>
+          </div>
+          <div class="veld">
+            <label>E-mailadres <span class="verplicht">*</span></label>
+            <input type="email" name="email" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-blok">
+        <div class="form-blok-label">Capaciteit</div>
+
+        <div class="veld-rij">
+          <div class="veld">
+            <label>Aantal medewerkers <span class="verplicht">*</span></label>
+            <select name="aantal_medewerkers" required>
+              <option value="">Maak een keuze</option>
+              <option value="1-10">1 – 10</option>
+              <option value="11-50">11 – 50</option>
+              <option value="51+">51 of meer</option>
+            </select>
+          </div>
+          <div class="veld">
+            <label>Aantal leerwerkplekken (indicatie) <span class="verplicht">*</span></label>
+            <select name="indicatie_leerwerkplekken" required>
+              <option value="">Maak een keuze</option>
+              <option value="1">1 leerling</option>
+              <option value="2-3">2 – 3 leerlingen</option>
+              <option value="4+">4 of meer</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-blok" style="border:1.5px solid var(--marine); background:var(--lichtblauw);">
+        <div class="form-blok-label" style="color:var(--marine);">SBB-erkenning en praktijkopleider</div>
+
+        <div class="veld">
+          <label>Heeft uw bedrijf een SBB-erkenning als leerbedrijf? <span class="verplicht">*</span></label>
+          <div class="radio-rij">
+            <label class="radio-opt"><input type="radio" name="sbb_erkenning" value="ja" required> Ja</label>
+            <label class="radio-opt"><input type="radio" name="sbb_erkenning" value="nee" required> Nee</label>
+            <label class="radio-opt"><input type="radio" name="sbb_erkenning" value="weet_niet" required> Weet ik niet</label>
+          </div>
+          <div class="hint">Geen erkenning? Geen probleem — we begeleiden je hierin als bedrijf-lid wordt.</div>
+        </div>
+
+        <div class="veld">
+          <label>Is er een praktijkopleider (POB) binnen uw bedrijf aanwezig? <span class="verplicht">*</span></label>
+          <div class="radio-rij">
+            <label class="radio-opt"><input type="radio" name="praktijkopleider_status" value="erkend" required> Ja, erkend</label>
+            <label class="radio-opt"><input type="radio" name="praktijkopleider_status" value="niet_erkend" required> Ja, nog niet erkend</label>
+            <label class="radio-opt"><input type="radio" name="praktijkopleider_status" value="nog_regelen" required> Nee, nog te regelen</label>
+          </div>
+        </div>
+
+        <div class="veld">
+          <label>Naam praktijkopleider <span style="color:var(--sub); font-weight:400;">(optioneel)</span></label>
+          <input type="text" name="naam_praktijkopleider">
+        </div>
+      </div>
+
+      <div class="form-blok">
+        <div class="veld">
+          <label>Vraag of toelichting <span style="color:var(--sub); font-weight:400;">(optioneel)</span></label>
+          <textarea name="toelichting" placeholder="Bijvoorbeeld: vanaf wanneer u leerlingen zou willen plaatsen, of een specifieke vraag."></textarea>
+        </div>
+        <div class="uitsluiting">Geen BTW-nummer, financiële gegevens of handtekening nodig op dit formulier</div>
+      </div>
+
+      <button type="submit" class="verzend-btn">Verzenden</button>
+    </form>
+  </div>
+
+  <!-- STAP 2B: FORMULIER LEERLING -->
+  <div class="form-wrap" id="form-leerling">
+    <a class="terug-link" onclick="terugNaarKeuze()">← Terug naar keuze</a>
+    <h2>Aanmelden als leerling / kandidaat</h2>
+    <p class="intro">Je ontvangt direct een bevestiging per e-mail (bij minderjarigen ook je ouder/voogd). We nemen daarna binnen enkele werkdagen contact met je op om kennis te maken en te kijken welk bedrijf bij je past.</p>
+
+    <form id="formulier-leerling" onsubmit="return verzendFormulier(event,'leerling')">
+      <div class="form-blok">
+        <div class="form-blok-label">Persoonlijke gegevens</div>
+
+        <div class="veld">
+          <label>Volledige naam <span class="verplicht">*</span></label>
+          <input type="text" name="naam" required>
+        </div>
+
+        <div class="veld-rij">
+          <div class="veld">
+            <label>Geboortedatum <span class="verplicht">*</span></label>
+            <input type="date" name="geboortedatum" id="geboortedatum" required onchange="checkLeeftijd()">
+          </div>
+          <div class="veld">
+            <label>Woonplaats <span class="verplicht">*</span></label>
+            <input type="text" name="woonplaats" required>
+          </div>
+        </div>
+
+        <div class="veld">
+          <label>Adres <span class="verplicht">*</span></label>
+          <input type="text" name="adres" required>
+        </div>
+
+        <div class="veld-rij">
+          <div class="veld">
+            <label>Telefoonnummer <span class="verplicht">*</span></label>
+            <input type="tel" name="telefoon" required>
+          </div>
+          <div class="veld">
+            <label>E-mailadres <span class="verplicht">*</span></label>
+            <input type="email" name="email" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-blok">
+        <div class="form-blok-label">Situatie en interesse</div>
+
+        <div class="veld">
+          <label>Huidige situatie <span class="verplicht">*</span></label>
+          <select name="huidige_situatie" required>
+            <option value="">Maak een keuze</option>
+            <option value="school">Ik ga nog naar school</option>
+            <option value="werkend">Ik werk al</option>
+            <option value="werkloos">Ik zoek werk / een opleiding</option>
+            <option value="anders">Anders</option>
+          </select>
+        </div>
+
+        <div class="veld">
+          <label>Interesse-richting <span class="verplicht">*</span></label>
+          <select name="interesse_richting" required>
+            <option value="">Maak een keuze</option>
+            <option value="metaal">Metaal</option>
+            <option value="installatie">Installatietechniek</option>
+            <option value="hout">Hout / timmer</option>
+            <option value="weet_nog_niet">Weet ik nog niet</option>
+          </select>
+        </div>
+
+        <div class="veld">
+          <label>Heb je al contact met een school (bijv. Gilde Opleidingen)? <span class="verplicht">*</span></label>
+          <div class="radio-rij">
+            <label class="radio-opt"><input type="radio" name="contact_school" value="ja" required> Ja</label>
+            <label class="radio-opt"><input type="radio" name="contact_school" value="nee" required> Nee</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-blok" style="border:1.5px solid var(--marine); background:var(--lichtblauw);">
+        <div class="form-blok-label" style="color:var(--marine);">Begeleiding</div>
+        <div class="begeleiding-intro">
+          <strong>Soms is er wat extra ondersteuning nodig — en dat is heel normaal.</strong> We willen dit graag vooraf weten, zodat we de begeleiding goed kunnen inrichten. Dit heeft geen invloed op je kans op een leerwerkplek.
+        </div>
+
+        <div class="veld">
+          <label>Is er een vorm van extra begeleiding nodig? <span class="verplicht">*</span></label>
+          <div class="radio-rij">
+            <label class="radio-opt"><input type="radio" name="begeleiding_nodig" value="nee" required onclick="toggleBegeleiding(false)"> Nee</label>
+            <label class="radio-opt"><input type="radio" name="begeleiding_nodig" value="ja" required onclick="toggleBegeleiding(true)"> Ja</label>
+          </div>
+        </div>
+
+        <div id="begeleiding-detail" style="display:none;">
+          <div class="veld">
+            <label>Om welke situatie gaat het? <span style="color:var(--sub); font-weight:400;">(meerdere antwoorden mogelijk)</span></label>
+            <div class="check-rij">
+              <label class="check-opt"><input type="checkbox" name="begeleiding_categorie" value="statushouder"> Nieuw in Nederland / statushouder</label>
+              <label class="check-opt"><input type="checkbox" name="begeleiding_categorie" value="zij_instromer"> Zij-instromer</label>
+              <label class="check-opt"><input type="checkbox" name="begeleiding_categorie" value="school_zorg"> Begeleiding vanuit school / zorg</label>
+              <label class="check-opt"><input type="checkbox" name="begeleiding_categorie" value="anders"> Anders</label>
+            </div>
+          </div>
+          <div class="veld">
+            <label>Contactpersoon begeleiding <span style="color:var(--sub); font-weight:400;">(optioneel)</span></label>
+            <input type="text" name="begeleiding_contactpersoon" placeholder="Naam en rol, bijv. mentor of taalcoach">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-blok" id="voogd-blok">
+        <div class="voogd-label">Gegevens ouder of voogd</div>
+        <p style="font-size:13px; color:var(--sub); margin-bottom:14px; line-height:1.6;">Omdat je nog geen 18 jaar bent, vragen we ook de gegevens van een ouder of voogd. Dit is nodig voor de uiteindelijke arbeidsovereenkomst.</p>
+
+        <div class="veld">
+          <label>Naam ouder / voogd <span class="verplicht">*</span></label>
+          <input type="text" name="ouder_voogd_naam">
+        </div>
+        <div class="veld-rij">
+          <div class="veld">
+            <label>Telefoonnummer ouder / voogd <span class="verplicht">*</span></label>
+            <input type="tel" name="ouder_voogd_telefoon">
+          </div>
+          <div class="veld">
+            <label>E-mailadres ouder / voogd <span class="verplicht">*</span></label>
+            <input type="email" name="ouder_voogd_email">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-blok">
+        <div class="veld">
+          <label>Motivatie of vraag <span style="color:var(--sub); font-weight:400;">(optioneel)</span></label>
+          <textarea name="motivatie" placeholder="Vertel kort waarom je interesse hebt, of stel je vraag."></textarea>
+        </div>
+        <div class="uitsluiting">Geen BSN, kopie ID of diploma's nodig op dit formulier</div>
+      </div>
+
+      <button type="submit" class="verzend-btn">Verzenden</button>
+    </form>
+  </div>
+
+  <!-- BEVESTIGING -->
+  <div class="bevestiging" id="bevestiging">
+    <div class="bevestiging-icoon">✓</div>
+    <h3>Bedankt voor je aanmelding!</h3>
+    <p>We hebben je gegevens ontvangen. Je krijgt zo een bevestiging in je mail. De directeur neemt binnen enkele werkdagen contact met je op om kennis te maken.</p>
+  </div>
+</section>
+
+<div class="terra-streep"></div>
+<footer>
+  <div>© 2026 Coöperatie Vakschool Weerterland U.A. — Regio Weerterland</div>
+  <div><a href="#">Privacyverklaring</a><a href="#">Contact</a></div>
+</footer>
+
+<script>
+function kiesRoute(route) {
+  document.getElementById('stap-keuze').style.display = 'none';
+  document.getElementById('form-bedrijf').classList.remove('actief');
+  document.getElementById('form-leerling').classList.remove('actief');
+  if (route === 'bedrijf') {
+    document.getElementById('form-bedrijf').classList.add('actief');
+  } else {
+    document.getElementById('form-leerling').classList.add('actief');
+  }
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function terugNaarKeuze() {
+  document.getElementById('form-bedrijf').classList.remove('actief');
+  document.getElementById('form-leerling').classList.remove('actief');
+  document.getElementById('stap-keuze').style.display = 'block';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function checkLeeftijd() {
+  const waarde = document.getElementById('geboortedatum').value;
+  if (!waarde) return;
+  const geboorte = new Date(waarde);
+  const vandaag = new Date();
+  let leeftijd = vandaag.getFullYear() - geboorte.getFullYear();
+  const nogNietVerjaard = (vandaag.getMonth() < geboorte.getMonth()) ||
+    (vandaag.getMonth() === geboorte.getMonth() && vandaag.getDate() < geboorte.getDate());
+  if (nogNietVerjaard) leeftijd--;
+
+  const voogdBlok = document.getElementById('voogd-blok');
+  const voogdVelden = voogdBlok.querySelectorAll('input');
+  if (leeftijd < 18) {
+    voogdBlok.classList.add('tonen');
+    voogdVelden.forEach(v => v.required = true);
+  } else {
+    voogdBlok.classList.remove('tonen');
+    voogdVelden.forEach(v => v.required = false);
+  }
+}
+
+function toggleBegeleiding(tonen) {
+  document.getElementById('begeleiding-detail').style.display = tonen ? 'block' : 'none';
+}
+
+function verzendFormulier(event, type) {
+  event.preventDefault();
+  // FASE 1: gegevens gaan per e-mail naar info@mkbtechniekweerterland.nl via formulierdienst.
+  // De formulierdienst stuurt daarnaast automatisch een bevestigingsmail (auto-reply) naar
+  // het e-mailadres dat de aanvrager zelf invulde (veld 'email').
+  // Bij een leerling onder 18 jaar gaat dezelfde bevestigingsmail ook naar het e-mailadres
+  // van de ouder/voogd (veld 'ouder_voogd_email'), zodat die ook op de hoogte is.
+  // FASE 2 (TODO, na bouw management-app): koppelen aan Supabase-database i.p.v. e-mail;
+  // de bevestigingsmail-functie blijft dan bestaan, alleen de opslag van de gegevens verandert.
+  // De 'name' attributen van de velden zijn alvast vastgelegd als vaste technische
+  // veldnamen (bv. bedrijfsnaam, sbb_erkenning, geboortedatum) voor een 1-op-1 koppeling later.
+
+  document.getElementById('form-bedrijf').classList.remove('actief');
+  document.getElementById('form-leerling').classList.remove('actief');
+  document.getElementById('bevestiging').classList.add('actief');
+  window.scrollTo({top:0, behavior:'smooth'});
+  return false;
+}
+</script>
+
+</body>
+</html>
